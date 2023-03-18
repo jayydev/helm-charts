@@ -176,13 +176,13 @@ server:
   global:
     ## How frequently to scrape targets by default
     ##
-    scrape_interval: 1m
+    scrape_interval: 15s
     ## How long until a scrape request times out
     ##
     scrape_timeout: 10s
     ## How frequently to evaluate rules
     ##
-    evaluation_interval: 1m
+    evaluation_interval: 15s
   ## https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write
   ##
   remoteWrite: []
@@ -1024,6 +1024,13 @@ serverFiles:
           - source_labels: [__meta_kubernetes_pod_phase]
             regex: Pending|Succeeded|Failed|Completed
             action: drop
+
+      # scrap config for my backend app
+      - job_name: 'backend-app'
+        scrape_interval: 5s
+        static_configs:
+          - targets:
+            - 0.0.0.0:8080
 
 # adds additional scrape configs to prometheus.yml
 # must be a string so you have to add a | after extraScrapeConfigs:
